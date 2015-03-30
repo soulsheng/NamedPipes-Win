@@ -2,7 +2,7 @@
 #include <IPCClient.h>
 #include <stdio.h>
 
-class TestSRVIPC : public IPCMessageHandler
+class ServerHandler : public IPCMessageHandler
 {
 public:
 	virtual void OnPacketReceived(char *szBuff, unsigned long length)
@@ -16,7 +16,7 @@ public:
 };
 
 
-class TestCLTIPC : public IPCMessageHandler
+class ClientHandler : public IPCMessageHandler
 {
 public:
 	virtual void OnPacketReceived(char *szBuff, unsigned long length)
@@ -33,40 +33,46 @@ int main(int argc, char *argv[])
 {
 	if (argc >1)
 	{
+		// Server 
 		printf("Running server:\n");
-		TestSRVIPC* SRVIPC = IPCServer::CreateIPCServer<TestSRVIPC>("testpipe");
+		ServerHandler *MessageHandler = new ServerHandler();
+		IPCServer* server = IPCServer::CreateIPCServer(MessageHandler, "testpipe");
 		printf("Waiting for incoming connections!\n");
 		while (1)
 		{
-			while (SRVIPC->PeekMessages(100))
+			while (server->PeekMessages(100))
 			{
-				printf("===========\n");
+				
 			}
+			Sleep(100);
 		}
 	}
 	else{
+		// Client
 		printf("Running client:\n");
-		TestCLTIPC *CLTIPC = IPCClient::CreateIPCClient<TestCLTIPC>("testpipe");
-		if (!CLTIPC)
+		ClientHandler *MessageHandler = new ClientHandler();
+		ClientHandler *client = IPCClient::CreateIPCClient(MessageHandler, "testpipe");
+		if (!client)
 		{
 			printf("Failed to connect");
-			while (1){};
+			return -1;
 		}
 		printf("Connected");
 		char szBuffer[128];
 		sprintf(szBuffer, "I am here!");
-		if (CLTIPC->Send(szBuffer, strlen(szBuffer)+1) == 0)
+		if (client->Send(szBuffer, strlen(szBuffer)+1) == 0)
 		{
 			printf("Done\n");
 		}
 		while (1)
 		{
-			while (CLTIPC->PeekMessages(100))
+			while (client->PeekMessages(100))
 			{		
 				printf("===========\n");
 			}
+			Sleep(100);
 		}
 
 	}
-
+	return 0;
 }
