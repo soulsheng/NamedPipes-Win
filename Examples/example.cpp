@@ -5,12 +5,12 @@
 class ServerHandler : public IPCMessageHandler
 {
 public:
-	virtual void OnPacketReceived(char *szBuff, unsigned long length)
+	virtual void OnPacketReceived(IIPC* IPC, char *szBuff, unsigned long length)
 	{
 		printf("Received[%d]: %s\n", length, szBuff);
 		char szBuffer[128];
 		sprintf(szBuffer, "Server Msg");
-		this->Send(szBuffer, strlen(szBuffer) + 1);
+		IPC->Send(szBuffer, strlen(szBuffer) + 1);
 		
 	}
 };
@@ -19,12 +19,12 @@ public:
 class ClientHandler : public IPCMessageHandler
 {
 public:
-	virtual void OnPacketReceived(char *szBuff, unsigned long length)
+	virtual void OnPacketReceived(IIPC* IPC, char *szBuff, unsigned long length)
 	{
 		printf("Received[%d]: %s\n", length, szBuff);
 		char szBuffer[128];
 		sprintf(szBuffer, "Client Msg");
-		this->Send(szBuffer, strlen(szBuffer) + 1);
+		IPC->Send(szBuffer, strlen(szBuffer) + 1);
 		
 	}
 };
