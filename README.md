@@ -1,4 +1,4 @@
 # NamedPipes-Win
-Lightweight Named Pipes for IPC communication. Windows Only!
+Lightweight Named Pipes for windows!
 
-And it is under development. So try not use it just yet.
+No overwhelming dependencies like boost etc!
