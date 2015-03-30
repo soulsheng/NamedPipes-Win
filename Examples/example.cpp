@@ -51,7 +51,7 @@ int main(int argc, char *argv[])
 		// Client
 		printf("Running client:\n");
 		ClientHandler *MessageHandler = new ClientHandler();
-		ClientHandler *client = IPCClient::CreateIPCClient(MessageHandler, "testpipe");
+		IPCClient *client = IPCClient::CreateIPCClient(MessageHandler, "testpipe");
 		if (!client)
 		{
 			printf("Failed to connect");
