@@ -87,15 +87,14 @@ void IPCClient::BroadcastMessage(char *szBuff, unsigned long length)
 unsigned long IPCClient::Receive(char *szBuffer, unsigned long length)
 {
 	unsigned long iBytes = 0;
-	if (!WaitNamedPipe(m_szPipeName, 100))
+	
+	int bReadSuccess = ReadFile(m_hPipe, szBuffer, length, &iBytes, 0);
+	if (bReadSuccess)
 	{
-		int bReadSuccess = ReadFile(m_hPipe, szBuffer, length, &iBytes, 0);
-		if (bReadSuccess)
-		{
-			return iBytes;
-		}
-
+		return iBytes;
 	}
+
+	
 	return 0;
 }
 
