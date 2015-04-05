@@ -31,7 +31,7 @@ IPCServer* IPCServer::CreateIPCServer(IPCMessageHandler* MessageHandler, char *P
 bool IPCServer::CreateIPCPipe(const char *pipeName)
 {
 	sprintf(m_szPipeName, "\\\\.\\pipe\\%s", pipeName);
-	m_hPipe = CreateNamedPipe(m_szPipeName,
+	m_hPipe = CreateNamedPipeA(m_szPipeName,
 		PIPE_ACCESS_DUPLEX,
 		PIPE_TYPE_MESSAGE | PIPE_READMODE_MESSAGE | PIPE_NOWAIT,
 		PIPE_UNLIMITED_INSTANCES,
@@ -85,15 +85,14 @@ void IPCServer::BroadcastMessage(char *szBuff, unsigned long length)
 unsigned long IPCServer::Receive(char *szBuffer, unsigned long length)
 {
 	unsigned long iBytes = 0;
-	if (!WaitNamedPipe(m_szPipeName, 100))
-	{
-		int bReadSuccess = ReadFile(m_hPipe, szBuffer, length, &iBytes, 0);
-		if (bReadSuccess)
-		{
-			return iBytes;
-		}
 
+	int bReadSuccess = ReadFile(m_hPipe, szBuffer, length, &iBytes, 0);
+	if (bReadSuccess)
+	{
+		return iBytes;
 	}
+
+	
 	return 0;
 }
 
