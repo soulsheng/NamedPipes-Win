@@ -1,6 +1,7 @@
 #include <IPCServer.h>
 #include <IPCClient.h>
 #include <stdio.h>
+#include <time.h>
 
 #define		SIZE_BUFFER	1024*1024*4*4
 #define		TIME_INTERVAL	50
@@ -10,8 +11,8 @@ class ServerHandler : public IPCMessageHandler
 public:
 	virtual void OnPacketReceived(IIPC* IPC, char *szBuff, unsigned long length)
 	{
-		printf("Received[%d]: %s\n", length, szBuff);
-		sprintf_s(szBuffer, SIZE_BUFFER, "Server Msg");
+		printf("Received[%d]: %s, t %ld\n", length, szBuff, GetTickCount());
+		sprintf_s(szBuffer, SIZE_BUFFER, "Server Msg, t %ld", GetTickCount());
 		IPC->Send(szBuffer, strlen(szBuffer) + 1);
 		
 	}
@@ -24,8 +25,8 @@ class ClientHandler : public IPCMessageHandler
 public:
 	virtual void OnPacketReceived(IIPC* IPC, char *szBuff, unsigned long length)
 	{
-		printf("Received[%d]: %s\n", length, szBuff);
-		sprintf_s(szBuffer, SIZE_BUFFER, "Client Msg");
+		printf("Received[%d]: %s, t %ld\n", length, szBuff, GetTickCount());
+		sprintf_s(szBuffer, SIZE_BUFFER, "Client Msg, t %ld", GetTickCount());
 		IPC->Send(szBuffer, strlen(szBuffer) + 1);
 		
 	}
