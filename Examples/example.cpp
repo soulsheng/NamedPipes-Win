@@ -9,7 +9,7 @@ public:
 	{
 		printf("Received[%d]: %s\n", length, szBuff);
 		char szBuffer[128];
-		sprintf(szBuffer, "Server Msg");
+		sprintf_s(szBuffer, "Server Msg");
 		IPC->Send(szBuffer, strlen(szBuffer) + 1);
 		
 	}
@@ -23,7 +23,7 @@ public:
 	{
 		printf("Received[%d]: %s\n", length, szBuff);
 		char szBuffer[128];
-		sprintf(szBuffer, "Client Msg");
+		sprintf_s(szBuffer, "Client Msg");
 		IPC->Send(szBuffer, strlen(szBuffer) + 1);
 		
 	}
@@ -59,7 +59,7 @@ int main(int argc, char *argv[])
 		}
 		printf("Connected");
 		char szBuffer[128];
-		sprintf(szBuffer, "I am here!");
+		sprintf_s(szBuffer, "I am here!");
 		if (client->Send(szBuffer, strlen(szBuffer)+1) == 0)
 		{
 			printf("Done\n");
