@@ -56,3 +56,8 @@ Temporary Items
 /*.suo
 /Debug
 /Release
+/x64/Debug/*.bmp
+/Examples/*.bmp
+/Examples/*.txt
+/x64
+/Examples/*.mp4

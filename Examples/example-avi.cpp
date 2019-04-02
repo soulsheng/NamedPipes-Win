@@ -7,10 +7,10 @@
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
 
-#define		SIZE_BUFFER_SEND_SERVER	(1024*1024*4)
+#define		SIZE_BUFFER_SEND_SERVER	(1024*1024*8)
 #define		SIZE_BUFFER_SEND_CLIENT	(256)		//(>4*7*5) float[7]*5
-#define		IMAGE_WIDTH		852
-#define		IMAGE_HEIGHT	640
+#define		IMAGE_WIDTH		1920 // 1920 852
+#define		IMAGE_HEIGHT	1080 // 1080 640
 #define		TIME_INTERVAL	50
 
 class ServerHandler : public IPCMessageHandler
@@ -39,7 +39,7 @@ public:
 		cv::Mat	img(IMAGE_HEIGHT, IMAGE_WIDTH, CV_8UC3);
 		img.data = (uchar*)szBuff;
 		cv::imshow("Receive img", img);
-		cv::waitKey();		
+		cv::waitKey(1);		
 	}
 };
 
@@ -54,19 +54,37 @@ int main(int argc, char *argv[])
 		printf("Waiting for incoming connections!\n");
 
 		// server prepare data
-		cv::Mat img = cv::imread(argv[1], -1);
+		cv::VideoCapture video;
+		video.open(argv[1]);
 
-		if (img.empty())
+		// Exit if video is not opened
+		if (!video.isOpened())
+		{
+			printf( "Could not read video file\n");
 			return -1;
+
+		}
+
+		cv::Mat img;
+		bool ok = video.read(img);
 
 		while (1)
 		{
-			while (server->PeekMessages(TIME_INTERVAL))
+			while (ok&&server->PeekMessages(TIME_INTERVAL))
 			{
 				// server send data
 				int nSizeBuffer = img.rows * img.step;
 				server->Send((char*)img.data, nSizeBuffer);
 				printf("server send a image");
+
+				// Exit if ESC pressed.
+				cv::imshow("Send img", img);
+				int k = cv::waitKey(1);
+				if (k == 27)
+				{
+					break;
+				}
+				ok = video.read(img);
 			}
 			Sleep(TIME_INTERVAL);
 		}
