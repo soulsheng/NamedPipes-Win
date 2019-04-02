@@ -54,7 +54,7 @@ int main(int argc, char *argv[])
 		printf("Waiting for incoming connections!\n");
 
 		// server prepare data
-		cv::Mat img = cv::imread("D:\\file\\code\\git\\tool\\NamedPipes-Win\\Examples\\2.bmp", -1);
+		cv::Mat img = cv::imread(argv[1], -1);
 
 		if (img.empty())
 			return -1;
