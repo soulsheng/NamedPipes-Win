@@ -16,9 +16,13 @@ IPCServer::~IPCServer()
 	m_hPipe = 0;
 }
 
-IPCServer* IPCServer::CreateIPCServer(IPCMessageHandler* MessageHandler, char *PipeName)
+IPCServer* IPCServer::CreateIPCServer(IPCMessageHandler* MessageHandler, char *PipeName, int szBuffer)
 {
 	IPCServer* srv = new IPCServer();
+
+	srv->m_szBuffer = szBuffer;
+	srv->m_pBuffer = new char[szBuffer];
+
 	if (!srv->CreateIPCPipe(PipeName))
 	{
 		delete srv;
@@ -35,7 +39,7 @@ bool IPCServer::CreateIPCPipe(const char *pipeName)
 		PIPE_ACCESS_DUPLEX,
 		PIPE_TYPE_MESSAGE | PIPE_READMODE_MESSAGE | PIPE_NOWAIT,
 		PIPE_UNLIMITED_INSTANCES,
-		2048, 2048, 0, NULL
+		m_szBuffer, m_szBuffer, 0, NULL
 		);
 
 	if (!m_hPipe)
@@ -59,12 +63,12 @@ bool IPCServer::PeekMessages(unsigned long  milliseconds)
 		if (bConnected)
 		{
 				
-			char szBuffer[2048];
-			unsigned long iBytes = this->Receive(szBuffer, 2048);
+			//char szBuffer[2048];
+			unsigned long iBytes = this->Receive(m_pBuffer, m_szBuffer);
 
 			if (iBytes > 0)
 			{
-				this->BroadcastMessage(szBuffer, iBytes);
+				this->BroadcastMessage(m_pBuffer, iBytes);
 				return true;
 			}
 			return false;

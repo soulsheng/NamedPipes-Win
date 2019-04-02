@@ -11,12 +11,15 @@ private:
 	HANDLE m_hPipe;
 	char m_szPipeName[256];
 	IPCMessageHandler* m_pMessageHandler;
+
+	int m_szBuffer;
+	char* m_pBuffer;
 protected:
 	IPCClient();
 	~IPCClient();
 	bool CreateIPCFile(const char *PipeName);
 public:
-	static IPCClient* CreateIPCClient(IPCMessageHandler* MessageHandler, char *PipeName);
+	static IPCClient* CreateIPCClient(IPCMessageHandler* MessageHandler, char *PipeName, int szBuffer = 2048);
 
 
 	virtual void BroadcastMessage(char *szBuff, unsigned long length);

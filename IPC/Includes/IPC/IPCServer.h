@@ -11,12 +11,15 @@ private:
 	char m_szPipeName[256];
 	bool m_bIsConnected;
 	IPCMessageHandler* m_pMessageHandler;
+
+	int m_szBuffer;
+	char* m_pBuffer;
 protected:
 	IPCServer();
 	~IPCServer();
 	bool CreateIPCPipe(const char *pipename);
 public:
-	static IPCServer* CreateIPCServer(IPCMessageHandler* MessageHandler, char *PipeName);
+	static IPCServer* CreateIPCServer(IPCMessageHandler* MessageHandler, char *PipeName, int szBuffer=2048);
 
 
 

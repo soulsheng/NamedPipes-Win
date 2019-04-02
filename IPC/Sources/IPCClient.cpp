@@ -16,9 +16,13 @@ IPCClient::~IPCClient()
 	m_hPipe = 0;
 }
 
-IPCClient* IPCClient::CreateIPCClient(IPCMessageHandler* MessageHandler, char *PipeName)
+IPCClient* IPCClient::CreateIPCClient(IPCMessageHandler* MessageHandler, char *PipeName, int szBuffer)
 {
 	IPCClient* clt = new IPCClient();
+
+	clt->m_szBuffer = szBuffer;
+	clt->m_pBuffer = new char[szBuffer];
+
 	if (!clt->CreateIPCFile(PipeName))
 	{
 		delete clt;
@@ -68,12 +72,12 @@ bool IPCClient::PeekMessages(unsigned long  milliseconds)
 	if (!m_pMessageHandler)
 		return false;
 
-	char szBuffer[2048];
-	unsigned long iBytes = this->Receive(szBuffer, 2048);
+	//char szBuffer[2048];
+	unsigned long iBytes = this->Receive(m_pBuffer, m_szBuffer);
 
 	if (iBytes > 0)
 	{
-		this->BroadcastMessage(szBuffer, iBytes);
+		this->BroadcastMessage(m_pBuffer, iBytes);
 		return true;
 	}
 	return false;
