@@ -36,16 +36,23 @@ public:
 	virtual void OnPacketReceived(IIPC* IPC, char *szBuff, unsigned long length)
 	{
 		printf("Client Received a image[%d]: %c, t %ld\n", length, szBuff[0], GetTickCount());
-		cv::Mat	img(IMAGE_HEIGHT, IMAGE_WIDTH, CV_8UC3);
+		cv::Mat	img(nHeight, nWidth, CV_8UC3);
 		img.data = (uchar*)szBuff;
 		cv::imshow("Receive img", img);
 		cv::waitKey(1);		
 	}
+	ClientHandler(int cols, int rows)
+	{
+		nWidth = cols;
+		nHeight = rows;
+	}
+	int nWidth, nHeight;
 };
 
 int main(int argc, char *argv[])
 {
-	if (argc >1)
+
+	if (argc ==2)
 	{
 		// Server 
 		printf("Running server:\n");
@@ -89,10 +96,10 @@ int main(int argc, char *argv[])
 			Sleep(TIME_INTERVAL);
 		}
 	}
-	else{
+	else{ // argc == 3
 		// Client
 		printf("Running client:\n");
-		ClientHandler *MessageHandler = new ClientHandler();
+		ClientHandler *MessageHandler = new ClientHandler(atoi(argv[1]), atoi(argv[2]));
 		IPCClient *client = IPCClient::CreateIPCClient(MessageHandler, "testpipe", SIZE_BUFFER_SEND_SERVER);
 		if (!client)
 		{
