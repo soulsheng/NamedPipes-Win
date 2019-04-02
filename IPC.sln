@@ -20,6 +20,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "example-ocv", "Examples\exa
 		{2A0EA613-40A6-4C6E-9D73-97CE672026A2} = {2A0EA613-40A6-4C6E-9D73-97CE672026A2}
 	EndProjectSection
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "example-avi", "Examples\example-avi.vcxproj", "{7AB43373-1C2F-4CAF-BDBD-35DE53DC2AD9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -60,6 +62,14 @@ Global
 		{5E3FE550-6135-4FFA-A91C-B66FDC34D576}.Release|Win32.Build.0 = Release|Win32
 		{5E3FE550-6135-4FFA-A91C-B66FDC34D576}.Release|x64.ActiveCfg = Release|x64
 		{5E3FE550-6135-4FFA-A91C-B66FDC34D576}.Release|x64.Build.0 = Release|x64
+		{7AB43373-1C2F-4CAF-BDBD-35DE53DC2AD9}.Debug|Win32.ActiveCfg = Debug|Win32
+		{7AB43373-1C2F-4CAF-BDBD-35DE53DC2AD9}.Debug|Win32.Build.0 = Debug|Win32
+		{7AB43373-1C2F-4CAF-BDBD-35DE53DC2AD9}.Debug|x64.ActiveCfg = Debug|x64
+		{7AB43373-1C2F-4CAF-BDBD-35DE53DC2AD9}.Debug|x64.Build.0 = Debug|x64
+		{7AB43373-1C2F-4CAF-BDBD-35DE53DC2AD9}.Release|Win32.ActiveCfg = Release|Win32
+		{7AB43373-1C2F-4CAF-BDBD-35DE53DC2AD9}.Release|Win32.Build.0 = Release|Win32
+		{7AB43373-1C2F-4CAF-BDBD-35DE53DC2AD9}.Release|x64.ActiveCfg = Release|x64
+		{7AB43373-1C2F-4CAF-BDBD-35DE53DC2AD9}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
