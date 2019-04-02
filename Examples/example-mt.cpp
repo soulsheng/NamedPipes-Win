@@ -3,6 +3,8 @@
 #include <stdio.h>
 #include <time.h>
 #include <fstream>
+#include <iostream>
+#include <process.h>
 #include <opencv2/core/core.hpp>
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
@@ -43,9 +45,7 @@ public:
 	}
 };
 
-int main(int argc, char *argv[])
-{
-	if (argc >1)
+	int run_server(char* arg)
 	{
 		// Server 
 		printf("Running server:\n");
@@ -55,12 +55,12 @@ int main(int argc, char *argv[])
 
 		// server prepare data
 		cv::VideoCapture video;
-		video.open(argv[1]);
+		video.open(arg);
 
 		// Exit if video is not opened
 		if (!video.isOpened())
 		{
-			printf( "Could not read video file\n");
+			printf("Could not read video file\n");
 			return -1;
 
 		}
@@ -75,7 +75,7 @@ int main(int argc, char *argv[])
 				// server send data
 				int nSizeBuffer = img.rows * img.step;
 				server->Send((char*)img.data, nSizeBuffer);
-				printf("server send a image");
+				printf("server send a image\n");
 
 				// Exit if ESC pressed.
 				cv::imshow("Send img", img);
@@ -88,8 +88,12 @@ int main(int argc, char *argv[])
 			}
 			Sleep(TIME_INTERVAL);
 		}
+
+		return 0;
 	}
-	else{
+	
+	int run_client()
+	{
 		// Client
 		printf("Running client:\n");
 		ClientHandler *MessageHandler = new ClientHandler();
@@ -130,6 +134,29 @@ int main(int argc, char *argv[])
 			Sleep(TIME_INTERVAL);
 		}
 
+		return 0;
 	}
+
+	void pro_server(LPVOID lp)
+	{
+		run_server((char*)lp);
+	}
+
+	void pro_client(LPVOID lp)
+	{
+		run_client();
+	}
+
+int main(int argc, char *argv[])
+{
+
+	// Server
+	_beginthread(pro_server, SIZE_BUFFER_SEND_SERVER, argv[1]);
+
+	// Client
+	_beginthread(pro_client, SIZE_BUFFER_SEND_SERVER, 0);
+
+	Sleep(30000);
+	std::cout << "end" << std::endl;
 	return 0;
 }
