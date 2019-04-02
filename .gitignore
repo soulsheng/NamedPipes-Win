@@ -54,3 +54,5 @@ Temporary Items
 *.idb
 /*.opensdf
 /*.suo
+/Debug
+/Release
